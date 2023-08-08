@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Client App</title>
+  <script defer src="./index.js"></script>
+  <link rel="stylesheet" href="my-demo.css" />
+</head>
+
+<body>
+  <header>
+    <h2>Getting Started</h2>
+    <h3>with Inrupt JavaScript Client Libraries</h3>
+  </header>
+  <section id="generateToken" class="panel">
+    <div class="row">
+      <label for="btnGenerateToken">Enter your Access Token(http://localhost:3000/)</label><br>
+      <form id ="tokenForm">
+      <label for="token">Your Access Token:</label>
+      <input name="token" type="text" id="token">
+    </form>
+    </div>
+  </section>
+
+  <div id="read" class="panel">
+    <div class="row">
+      <label id="readlabel" for="myWebID">2. Logged in with your WebID: </label>
+      <input type="text" id="myWebID" name="myWebID" size="50" disabled>
+      <button name="btnReadPod" id="btnReadPod">Get Pod URL(s)</button>
+    </div>
+  </div>
+
+  <div id="write" class="panel">
+    <div class="row">
+      <label id="writelabel">3. Post text data in my Pod.</label>
+    </div>
+    <br>
+
+    <div class="row">
+      <div>
+        <label id="podlabel" for="select-pod">Post Resource to Pod: </label>
+        <input type="url" name="podName" id="podName" placeholder="Write down the pod url you have access to">
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <form id="fileForm">
+        <div>
+          <label id="podlabel" for="fileTitle">New file title: </label>
+          <input
+            type="text"
+            id="file_name"
+            name="file_name"
+            size="50"
+            placeholder="Write file name here"/>
+          <button type="submit" name="btnSend" id="btnSend">Send</button>
+          <dd id="fileWriteStatus" class="fileStatus"></dd>
+        </div>
+      </form>
+    </div>
+    <br>
+    <div class="row">
+      <div>
+        <label id="listLabel" for="newData">Enter data to write: </label>
+        <textarea id="newData" name="newData" rows="5" cols="42" placeholder="Write text data here"></textarea>
+      </div>
+      <br>
+    </div>
+  </div>
+  
+  <div id="results" class="panel">
+    <div class="row">
+      <label>Create Reading List Status</label>
+      <span id="labelCreateStatus"></span>
+    </div>
+    <div class="row">
+      <div>
+        <label id="labelRetrieved" for="savedtitles">Retrieved to validate::</label>
+        <textarea id="savedtitles" name="savedtitles" rows="5" cols="42" disabled></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <dl class="display">
+        <label id="linklabel" for="file_link">Copy this location link! :: </label>
+        <dd id="labelLink">...No files created yet...</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 권한 설정 -->
+  <div id="read" class="panel">
+    <div class="row">
+      <label id="readlabel" for="webID">4. Grant Permission</label>
+      <!-- 권한 부여할 WebID 입력 -->
+      <div class="row">
+        <div><br>
+          <label id="podlabel" for="select-pod3">a. Write to your Pod: </label>
+          <select id="select-pod3" name="select-pod3" widths: 120>
+            <option value="">--Please select your Pod--</option>
+          </select>
+          <br>
+          <input type="text" id="input_permission_path" name="path" size="50"
+            placeholder="Write Path (Start without /)" /> currentLocation을 제외한 부분
+          <br><br>
+          <label id="listLabel" for="titles">b. Write WebId to authorize : </label>
+          <input type="url" id="grant_webID" name="grant_webID" size="50" placeholder="ex) https://id.inrupt.com/@@" />
+          <button name="btnViewor" id="btnViewor">Grant View Permission</button>
+          <p>권한을 넘겨줄 팟에게 필요한 Location 주소(복사용): </p>
+          <dd id="labelLink2"></dd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="read" class="panel">
+    <div class="row">
+      <form id="writeForm">
+        <label id="writelabel" for="input_name">5. Write your name: </label>
+        <input
+          type="text"
+          id="input_name"
+          name="name"
+          size="50"
+          placeholder="Your name here"
+        />
+        <button type="submit">
+          Write to Profile
+        </button>
+      </form>
+    </div>
+
+    <dl class="display">
+      <dt>Writing status:&nbsp</dt>
+      <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
+    </dl>
+  </div>
+  <div id="read" class="panel">
+    <div class="row">
+      <form id="readForm">
+        <label id="readlabel" for="webID"
+          >6. Read back data (client's) from their pod url:
+        </label><br>
+        <input 
+          type="url"
+          id="podUrl"
+          name="podUrl"
+          placeholder="Enter pod url" style="width: 500px"/>
+        <button type="submit" name="btnRead" id="btnRead">
+          Read Data
+        </button>
+      </form>
+    </div>
+    <dl class="display">
+      <dt> Data read from Pod: </dt>
+      <textarea rows="7" name="readData" id="readData">
+      </textarea>
+    </dl>
+  </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "@inrupt/solid-client": "^1.30.0",
+    "@inrupt/solid-client-access-grants": "^2.4.0",
+    "@inrupt/solid-client-authn-browser": "^1.17.1",
+    "@inrupt/vocab-common-rdf": "^1.0.5",
+    "@opentelemetry/api": "^1.4.1",
+    "fibers": "^5.0.3",
+    "next": "^13.4.12",
+    "parcel-bundler": "^1.12.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.64.1"
+  },
+  "browserslist": [
+    "last 3 and_chr versions",
+    "last 3 chrome versions",
+    "last 3 opera versions",
+    "last 3 ios_saf versions",
+    "last 3 safari versions",
+    "last 3 edge versions"
+  ],
+  "name": "solid-demo-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
