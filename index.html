@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Pod User App</title>
-  <script defer src="./index.js"></script>
+  <script type="module" defer src="./index.js"></script>
   <link rel="stylesheet" href="my-demo.css" />
 </head>
 
@@ -12,11 +12,21 @@
   <header>
     <h2>Pod User App</h2>
   </header>
+  
   <section class="panel">
     <div class="row">
-      <label for="btnGenerateToken"> Your Access Token(http://localhost:3000/)</label><br>
-      <textarea name="accessToken" type="text" id="accessToken" readonly="true" cols="100" rows="6"/>
+      <label>id: </label>
+      <input type="text" id="id" >
+      <label>secret: </label>
+      <input type="password" id="secret">
       <input type="button" id="getToken" value="Get Access Token">
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="row">
+      <h3>Your Access Token(http://localhost:3000/)</h3>
+      <textarea name="accessToken" type="text" id="accessToken" readonly="true" cols="100" rows="6"></textarea>
     </div>
   </section>
 
@@ -63,7 +73,7 @@
 
     <div class="row">
       <div>
-        <label>select user: </label>
+        <label>pod url: </label>
 
         <input type="url" name="podName" id="podName" placeholder="Write down the pod url you have access to" size="100">
       </div>
