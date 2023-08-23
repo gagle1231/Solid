@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Hospital</title>
+  <script type="module" defer src="./js/main.js"></script>
+  <script type="module" defer src="js/index.js"></script>
+  <link rel="stylesheet" href="scss/styles.scss" />
+</head>
+
+<body>
+  <!--header-->
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container-fluid">
+      <span class="text-white fw-bold h2 mb-2">Hospital<img src="hospital.png"/></span>
+      <span class="text-white h6 mb-2" id="hospitalId"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">
+            id/secret 발급
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registModal">
+            Authorize
+          </button>
+        </li>
+        </ul>
+    </div>
+    </div>
+  </nav>
+  <div class="container">  
+    <div class="my-5 p-3 bg-body rounded shadow-sm border border-secondary">
+      <div class="border-bottom">
+        <span class="pb-2 mb-0 fw-bold h5">환자 선택하기</span>
+      </div>
+      <div class="d-flex text-body-secondary pt-3">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend w-100">
+            <select class="form-select pt-1 mt-3" id="selectPatient">
+              <option selected>선택</option>
+            </select>
+        </div>
+        <button type="button" class="input-group-prepend my-2 btn btn-secondary" data-bs-toggle="modal" data-bs-toggle="modal" data-bs-target="#registPatientModal">
+          환자 등록하기
+        </button>
+        </div>
+      </div>
+    </div>
+  <div class="my-5 p-3 bg-body rounded shadow-sm border border-secondary">
+    <div class="border-bottom ">
+      <span class="pb-2 mb-0 fw-bold h5">환자 건강 정보 추가</span>
+    </div>
+    <div class="d-flex text-body-secondary pt-3" id="upload">
+      <div class="input-group mb-3">
+        <div class="mb-3 text-center w-100">
+          <input class="form-control w-80" type="file" id="formFile">
+          <span id="errorMessage" class="text-danger"></span>
+          <button id="btnUploadFile" class="btn btn-primary mt-2" type="button">업로드</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="my-5 p-3 bg-body rounded shadow-sm border border-secondary">
+    <div class="border-bottom ">
+      <span class="pb-2 mb-0 fw-bold h5">환자 건강 내역</span>
+    </div>
+    <div class="d-flex text-body-secondary pt-3">
+      <div class="card w-100 scroll" style="height: 300px; overflow:scroll">
+        <ul class="list-group list-group-flush" id="fileList">
+        </ul>
+      </div>
+    </div>
+</div>
+  <!--id/secret 발급 Modal -->
+  <div class="modal fade" id="authModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">id/secret 발급받기</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="mb-3 row">
+              <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputEmail" placeholder="email@example.com">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword">
+              </div>
+            </div>
+            <div class="mb-3 row text-center">
+              <div>
+                <input type="button" class="btn btn-success" value="발급받기" id="btnGetIdSecret">
+                <div id="resultOfId" class="h6 text-center"></div>
+              </div>
+            </div>
+            <div class="mb-3 row text-primary text-center">*id와 secret은 최초 1회만 발급받으면 됩니다. 저장 후 사용하시길 바랍니다.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Authorize Modal -->
+  <div class="modal fade" id="registModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Authorize</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="mb-3 row">
+              <label for="inputId" class="col-sm-2 col-form-label">Id</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputId" placeholder="id를 입력해주세요">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="inputSecret" class="col-sm-2 col-form-label">Secret</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputSecret">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <div class="text-center">
+                <input type="button" class="btn btn-success" value="토큰 발급받기" id="btnRegist">
+              </div>
+              <div id="resultOfToken" class="text-primary h6 text-center"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!--환자 등록 Modal -->
+   <div class="modal fade" id="registPatientModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">환자 등록하기</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="mb-3 row">
+              <label for="inputPatientId" class="col-sm-2 col-form-label">Web Id</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPatientId" placeholder="Web Id를 입력해주세요">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="inputPatientName" class="col-sm-2 col-form-label">이름</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPatientName">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="inputClientPodUrl" class="col-sm-2 col-form-label">Pod Url</label>
+              <div class="col-sm-10">
+                <input type="url" class="form-control" id="inputClientPodUrl">
+              </div>
+            </div>
+            <div class="mb-3 row text-center">
+              <div class="">
+                <input type="button" class="btn btn-success" value="등록하기" id="btnRegistPatient">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+// Import all of Bootstrap's CSS
+@import "bootstrap/scss/bootstrap";
+.select {
+    width: 300px;
+    height: 35px;
+    background-size: 20px;
+    padding: 5px 30px 5px 10px;
+    border-radius: 4px;
+    outline: 0 none;
+  }
+  .select option :hover{
+    background:rgb(201, 213, 247);
+    color: #fff;
+  }
+
+.border-info {
+    border-color: #eaf1ff;
+}
