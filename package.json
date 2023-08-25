@@ -5,10 +5,11 @@
     "@inrupt/solid-client-authn-browser": "^1.17.1",
     "@inrupt/vocab-common-rdf": "^1.0.5",
     "@opentelemetry/api": "^1.4.1",
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.1",
     "fibers": "^5.0.3",
     "next": "^13.4.12",
-    "parcel-bundler": "^1.12.5",
+    "parcel": "^2.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.64.1"
@@ -23,13 +24,16 @@
   ],
   "name": "solid-demo-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel src/index.html"
+    "start": "parcel serve src/index.html --public-url / --dist-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.9.3"
+  }
 }
