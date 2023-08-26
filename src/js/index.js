@@ -13,7 +13,7 @@ import * as bootstrap from 'bootstrap'
 var accessToken;
 var patientList = [];
 var selectPatient;
-var selectedPatient;
+var selectedPatientList = [];
 
 function fnInit(){
     var list = JSON.parse(localStorage.getItem("patientList"));
@@ -85,32 +85,35 @@ async function authorize(){
   //  modal.hide();
 }
 
+//일단은 병원 이름 상단 nav bar에 띄어주기 용도로 사용
 async function getHospitalProfile(){
+  //web id 가져오기
   var base64Payload = accessToken.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
   var payload = Buffer.from(base64Payload, 'base64'); 
   var result = JSON.parse(payload.toString())
   const webId = result.webid;
-  document.getElementById("hospitalId").innerText = webId;
+  const hospitalId = webId.split("/")[3]; //추후 추출 방식 변경 
+  document.getElementById("hospitalId").innerHTML = `<h4 class='mx-2'>${hospitalId}</h4>`;
 }
+
 async function uploadFile(){
   const file = document.getElementById("formFile").files[0];
   try{
     await saveFileInContainer(  
-      selectedPatient.podUrl+'hospital/',                             
+      selectedPatientList[0].podUrl+'public/',                             
       file,                                       // File
       { contentType: file.type, fetch: authFetch, slug: encodeURI(file.name) }   
     ).then(res => {
-     alert(' 파일 업로드 완료.');
-     getPatientFileList();
+      document.getElementById("errorMessage").innerHTML="<h5 class='text-success mt-2'><b>파일 전달 성공</b></h5>";
     })
   }catch(error){
     const errCode = error.statusCode;
     console.log('error: '+error);
 
    if(errCode == 403) {
-     document.getElementById("errorMessage").innerHTML="<h6><b>접근 권한이 없습니다.</b></h6>";
+    document.getElementById("errorMessage").innerHTML="<h5 class='text-danger mt-2'><b>접근 권한이 없습니다.</b></h5>";
    }else if(errCode == 404){
-    document.getElementById("errorMessage").innerHTML="<h6>해당 리소스가 존재하지 않습니다.</h6>";
+   document.getElementById("errorMessage").innerHTML="<h6>해당 리소스가 존재하지 않습니다.</h6>";
    }
   }
 
@@ -131,37 +134,48 @@ option.label= newPatient.name;
 selectPatient.appendChild(option);
 }
 
-async function getPatientFileList(){
-  try{
-    const container = await getSolidDataset(selectedPatient.podUrl+'hospital/', {fetch: authFetch});
-  const fileList = getContainedResourceUrlAll(container);
+const getPatientFileList = async function(){
   const ulFileList = document.getElementById("fileList");
   ulFileList.innerHTML=""; //초기화 하고 시작
-  fileList.forEach(e => {
-    const arSplitUrl = e.split("/");
-    const fileName = decodeURI(arSplitUrl[arSplitUrl.length-1]); //파일 이름만 추출
-    downloadFile(e).then(fileUrl => {
-    console.log(fileUrl);
-    var liTag = document.createElement("li");
-    var aTag = document.createElement("a");
-  
-    aTag.innerText = fileName;
-    aTag.href= fileUrl;
-    aTag.download = fileName;
 
-    liTag.appendChild(aTag);
-    ulFileList.appendChild(liTag);
-    }); })
-  }catch(error){
-    document.getElementById("fileList").innerHTML = `<span style='color:red; text-align:center'><b>접근 권한이 없습니다.<b></span>`;
-  }
+  selectedPatientList.forEach(async (patient) => {
+    const container = await getSolidDataset(patient.podUrl+'hospital/', {fetch: authFetch}); //default: public 파일에 전달
+    const fileList = getContainedResourceUrlAll(container); //컨테이너의 모든 리소스 url 조회
+    fileList.forEach(e => { //각 리소스 url로 파일 가져오기
+      const arSplitUrl = e.split("/");
+      const fileName = decodeURI(arSplitUrl[arSplitUrl.length-1]); //파일 이름만 추출(화면에 보여줄 용도)
+    
+      try{downloadFile(e).then(fileUrl => { //file 다운로드 url 반환
+        var liTag = document.createElement("li");
+        liTag.className = "my-1";
+        var aTag = document.createElement("a");
+        aTag.innerHTML = `<h6><a href="${fileUrl}">${fileName}</a><span style="margin-left: 10%;" class="badge rounded-pill text-bg-success">${patient.name}Read Success</span></h6>`;
+        aTag.href= fileUrl;
+        aTag.download = fileName;
+        liTag.appendChild(aTag);
+        ulFileList.appendChild(liTag);
+      });
+    }catch(error){
+        var liTag = document.createElement("li");
+        liTag.className = "my-1";
+        liTag.innerHTML = `<b><span class="text-danger">${e.id}에 접근권한이 없습니다: Read Fail</span></b>`;
+        ulFileList.appendChild(liTag);
+      }
 
+    })
+  })
 }
 
 async function downloadFile(url){
-  const file = await getFile(url, { fetch: authFetch });
-  const fileUrl = window.URL.createObjectURL(file);
-  return fileUrl;
+
+  try{
+    const file = await getFile(url, { fetch: authFetch });
+    const fileUrl = window.URL.createObjectURL(file);
+    return fileUrl;
+  }catch(error){
+    console.log('에러 발생');
+    throw "error";
+  }
 }
 
 document.getElementById("btnGetIdSecret").onclick = function(){
@@ -183,9 +197,13 @@ document.getElementById("btnUploadFile").onclick = function (){
 document.getElementById("selectPatient").onchange = function(event){
   console.log(event.target.value);
   const id = event.target.value;
-  selectedPatient = patientList.find(e => e.id == id);
-  console.log(selectedPatient);
-  document.getElementById("errorMessage").innerHTML="";
+  const p = patientList.find(e => e.id == id)
+  selectedPatientList.push(p);
 
+  document.getElementById("errorMessage").innerHTML="";
+  document.getElementById("selectedPatientList").innerHTML+=`<span class='badge text-bg-light mx-1'>#${p.name}<button style="border: 0px; background:none;">x</button></span>`;
+}
+
+document.getElementById("btnReadFile").onclick = function () {
   getPatientFileList();
 }
