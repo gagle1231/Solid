@@ -4,14 +4,12 @@
 
 📌Hospital app 실행: 
 
-`npm start`
+```
+$npm install
+$npm start
+```
 
-📌token demo app 실행: 
-
-`parcel index.html`
-
-
-
+*번들러는 parcel 이용
 * * *  
 
 
