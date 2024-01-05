@@ -1,5 +1,6 @@
 # Solid Hospital App
 
+앱 설명: https://www.notion.so/Hospital-App-179c1a375a4342bd8edeccf02d891ace?pvs=4
 
 
 📌Hospital app 실행: 
